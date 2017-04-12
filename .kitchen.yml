@@ -1,0 +1,32 @@
+---
+driver:
+  name: ec2
+  region: us-east-1
+  availability_zone: us-east-1a
+  aws_ssh_key_id: cad_demo_east
+  instance_type: m1.small
+  retryable_sleep: 10
+  tags:
+    Name: "Chef Demo Node"
+    created-by: "test-kitchen"
+    user: <%= ENV['USER'] %>
+
+provisioner:
+  name: chef_zero
+
+platforms:
+  - name: linux
+    driver_config:
+      image_id: ami-bc8131d4
+
+transport:
+  username: root
+  ssh_key: ~/.ssh/cad_demo_east.pem
+
+suites:
+  - name: default
+    run_list:
+      - recipe[iptables::default]
+      - recipe[chefweb::default]
+      #- recipe[chefweb::ssl]
+    attributes:

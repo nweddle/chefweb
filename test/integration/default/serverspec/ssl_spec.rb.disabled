@@ -1,0 +1,15 @@
+require 'spec_helper'
+
+describe 'chefweb::ssl' do
+  # Serverspec examples can be found at
+  # http://serverspec.org/resource_types.html
+  
+  describe port(443) do
+    it { should be_listening }
+  end
+  
+  describe command('curl -k https://localhost') do
+    its(:stdout) { should match(/Chef/) }
+  end
+
+end
